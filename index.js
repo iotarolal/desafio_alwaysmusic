@@ -61,7 +61,7 @@ if (comando == 'nuevo' ||  comando == 'editar') {
     eliminaestudiante(process.argv[3]);
 
 } else if (comando == 'rut') {
-    Consultarut(process.argv[3]);
+    Consultarut();
 } else {
     console.log('comando desconocido')
     process.exit(1);
@@ -95,8 +95,8 @@ async function consultaestudiante() {
 }
 
 // consulta estudiante por rut
-async function Consultarut(rut) {
-    const res = await client.query(`select * from estudiantes where rut = '${rut}'`)
+async function Consultarut() {
+    const res = await client.query(`select * from estudiantes where rut = '${para3}'`)
     console.log('Resultado', res.rows);
     client.end()
 }
