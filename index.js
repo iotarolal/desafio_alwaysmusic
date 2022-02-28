@@ -58,12 +58,10 @@ if (comando == 'nuevo' ||  comando == 'editar') {
     consultaestudiante();
 
 } else if (comando == 'eliminar') {
-    eliminaestudiante();
+    eliminaestudiante(process.argv[3]);
 
 } else if (comando == 'rut') {
-    console.log('consulta')
-    Consultarut();
-
+    Consultarut(process.argv[3]);
 } else {
     console.log('comando desconocido')
     process.exit(1);
@@ -73,7 +71,7 @@ if (comando == 'nuevo' ||  comando == 'editar') {
 // ingreso un nuevo estudiante
 async function nuevoestudiante () {
 	const res = await client.query(
-	`insert into estudiantes (rut, nombre, curso, nivel ) values ('${para3}','${para4}', '${para5}', '${para6}') returning *`
+	`insert into estudiantes (nombre, rut, curso, nivel ) values ('${para3}','${para4}', '${para5}', '${para6}') returning *`
     )
 	console.log('Resultado', res.rows);
     client.end()
@@ -92,23 +90,21 @@ async function editaestudiante () {
 async function consultaestudiante() {
     const res = await client.query(`select * from estudiantes`);
     console.log('Resultado', res.rows);
-    console.log('Columnas', res.fields);
+//    console.log('Columnas', res.fields);
     client.end()
 }
 
 // consulta estudiante por rut
-async function Consultarut() {
-    const res = await client.query(`select * from estudiantes where Rut = ‘${para3}'`)
-//    console.log('Resultado', res.rows);
-//    console.log('Columnas', res.fields);
+async function Consultarut(rut) {
+    const res = await client.query(`select * from estudiantes where rut = '${rut}'`)
+    console.log('Resultado', res.rows);
     client.end()
 }
 
 // elimina estudiante por rut
-async function eliminaestudiante() {
-    const res = await client.query(`delete from estudiantes where rut = ‘${para3}’`)
+async function eliminaestudiante(rut) {
+    const res = await client.query(`delete from estudiantes where rut = '${rut}'`)
 //    console.log('Resultado', res.rows);
-//    console.log('Columnas', res.fields);
     client.end()
 }
 
@@ -118,5 +114,5 @@ async function eliminaestudiante() {
 //    rut varchar(255) PRIMARY KEY,
 //    nombre varchar(255) NOT NULL,
 //    curso varchar(255) NOT NULL,
-//    nivel int NOT NULL
+//    nivel integer  NOT NULL
 //);
